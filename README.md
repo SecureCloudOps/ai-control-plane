@@ -1,5 +1,11 @@
 # AI Control Plane
 
+[![CI](https://github.com/SecureCloudOps/ai-control-plane/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/SecureCloudOps/ai-control-plane/actions/workflows/ci.yml)
+[![Latest tag](https://img.shields.io/github/v/tag/SecureCloudOps/ai-control-plane?label=version)](https://github.com/SecureCloudOps/ai-control-plane/tags)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Python: 3.12+](https://img.shields.io/badge/python-3.12%2B-blue?logo=python&logoColor=white)](#quick-start)
+[![Status: prototype](https://img.shields.io/badge/status-prototype-orange)](#system-architecture)
+
 **Priority-aware model routing • Kubernetes infrastructure • Financial observability**
 
 A Kubernetes-oriented prototype for **decoupling the application layer from model-selection policy**. A Flask router selects a model from request priority and prompt length, simulates inference, and exposes cost savings through Prometheus metrics.
