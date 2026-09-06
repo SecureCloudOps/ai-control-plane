@@ -1,0 +1,8 @@
+apiVersion: ai.platform.io/v1alpha1
+kind: InferenceDeployment
+metadata:
+  name: llama-demo
+spec:
+  modelName: llama-3.2-1b
+  priority: High
+  maxLatencyMs: 800

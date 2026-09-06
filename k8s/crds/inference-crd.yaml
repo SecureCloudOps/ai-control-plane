@@ -1,0 +1,38 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: inferencedeployments.ai.platform.io
+spec:
+  group: ai.platform.io
+  scope: Namespaced
+  names:
+    plural: inferencedeployments
+    singular: inferencedeployment
+    kind: InferenceDeployment
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: [spec]
+          properties:
+            apiVersion:
+              type: string
+            kind:
+              type: string
+            metadata:
+              type: object
+            spec:
+              type: object
+              required: [modelName, priority, maxLatencyMs]
+              properties:
+                modelName:
+                  type: string
+                priority:
+                  type: string
+                  enum: [High, Low, Batch]
+                maxLatencyMs:
+                  description: Requested maximum latency in milliseconds.
+                  type: integer

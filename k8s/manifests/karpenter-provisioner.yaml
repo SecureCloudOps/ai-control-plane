@@ -1,0 +1,19 @@
+# Blueprint for the Autoscaler when the Control Plane requests more GPU capacity.
+# Karpenter provisions nodes when GPU workloads have unschedulable pods.
+apiVersion: karpenter.sh/v1
+kind: NodePool
+metadata:
+  name: gpu-pool
+spec:
+  template:
+    spec:
+      nodeClassRef:
+        group: karpenter.k8s.aws
+        kind: EC2NodeClass
+        # Create this AWS node class separately with GPU-compatible AMI,
+        # IAM role, subnet, and security group settings for your cluster.
+        name: gpu
+      requirements:
+        - key: node.kubernetes.io/instance-type
+          operator: In
+          values: [g5.2xlarge] # NVIDIA A10G GPU
