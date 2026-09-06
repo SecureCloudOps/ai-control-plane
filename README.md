@@ -142,6 +142,60 @@ The namespaced **`ai.platform.io/v1alpha1`** API requires:
 
 ---
 
+## Teardown
+
+Run these commands from the repository root. Stop the local router and any
+`kubectl port-forward` process with **Ctrl+C** in their terminals.
+
+Remove the router from the kind cluster:
+
+```sh
+kubectl --context kind-kind delete --ignore-not-found \
+  -f k8s/manifests/router-deployment.yaml \
+  -f k8s/manifests/router-service.yaml
+```
+
+Use the same namespace as the deployment if you changed the context's default
+namespace. For a differently named kind cluster, replace `kind-kind` with its
+context name.
+
+If you installed the sample `InferenceDeployment`, remove it from the context
+and namespace where you installed it. The commands below assume `kind-kind`:
+
+```sh
+kubectl --context kind-kind delete --ignore-not-found \
+  -f k8s/custom-resources/example-deployment.yaml
+```
+
+Optionally remove the CRD when no other workloads need it. **Deleting the CRD
+also deletes all `InferenceDeployment` resources in every namespace in that
+cluster.** Inspect them first:
+
+```sh
+kubectl --context kind-kind get inferencedeployments.ai.platform.io --all-namespaces
+kubectl --context kind-kind delete --ignore-not-found -f k8s/crds/inference-crd.yaml
+```
+
+Optionally remove the host's demo image:
+
+```sh
+docker image rm model-router:local
+```
+
+If the entire kind cluster is disposable, delete it instead of removing
+individual Kubernetes resources. **This removes every workload in that cluster**,
+including images loaded into its nodes:
+
+```sh
+kind delete cluster --name kind
+```
+
+The kind walkthrough does not install the AWS Karpenter blueprint. If you applied
+it separately, manage its teardown in that AWS cluster after reviewing the GPU
+workloads and provisioned nodes; the commands above do not clean up AWS resources.
+
+---
+
 ## Repository Structure
 
 ```text
@@ -168,7 +222,12 @@ python -m unittest discover -s control-plane -p 'test_*.py'
 
 **CI runs both checks on pushes and pull requests.** Tests cover routing boundaries, input validation, cumulative savings, and GPU simulator behavior.
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+Copyright (c) 2026 Mohamed A. Mohamed.
+
 Author: Mohamed Mohamed
 
 Email: mohamed0395@gmail.com
-
